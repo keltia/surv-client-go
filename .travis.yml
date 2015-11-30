@@ -7,4 +7,5 @@ branches:
   - develop
   - master
 install:
-  - go get github.com/naoina/toml
+  - go get github.com/keltia/wsn-go/config
+  - go get github.com/keltia/wsn-go/wsn
