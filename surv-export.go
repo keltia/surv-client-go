@@ -7,6 +7,7 @@
 package main
 
 import (
+	"encoding/xml"
 	"flag"
 	"fmt"
 	"os"
@@ -42,6 +43,15 @@ var (
 
 	fOutputFH	*os.File
 )
+
+// Payload de-serialization
+type SDMessage struct {
+    Payload SDCat62Payload `xml:"Cat62SurveillanceJSON"`
+}
+
+type SDCat62Payload struct {
+   Text []byte `xml:"PlainText"`
+}
 
 // Subscribe to wanted topics
 func doSubscribe(feeds map[string]string) {
@@ -89,8 +99,16 @@ func keys(m map[string]string) []string {
 
 // fOutput callback
 func fileOutput(buf []byte) {
-	if nb, err := fOutputFH.Write(buf); err != nil {
-		log.Fatalf("Error writing %d bytes: %v", nb, err)
+	notify := &SDMessage{}
+
+	err := xml.Unmarshal(buf, notify)
+	if err != nil {
+		real := fmt.Sprintf("Error: %v", err)
+		log.Println(real)
+	} else {
+		if nb, err := fOutputFH.Write(notify.Payload.Text); err != nil {
+			log.Fatalf("Error writing %d bytes: %v", nb, err)
+		}
 	}
 }
 
