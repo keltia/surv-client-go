@@ -97,15 +97,18 @@ func keys(m map[string]string) []string {
 	return keys
 }
 
-// fOutput callback
+// fOutput file callback
 func fileOutput(buf []byte) {
 	notify := &SDMessage{}
 
 	err := xml.Unmarshal(buf, notify)
 	if err != nil {
-		real := fmt.Sprintf("Error: %v", err)
+		real := fmt.Sprintf("Error reading payload: %v/%v", buf, err)
 		log.Println(real)
 	} else {
+		if fVerbose {
+			log.Printf("payload size is %s\n", len(notify.Payload.Text))
+		}
 		if nb, err := fOutputFH.Write(notify.Payload.Text); err != nil {
 			log.Fatalf("Error writing %d bytes: %v", nb, err)
 		}
