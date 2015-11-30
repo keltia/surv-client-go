@@ -171,7 +171,7 @@ func main() {
 		log.Fatalf("Error loading %s: %v", RcFile, err)
 	}
 	if fVerbose {
-		fmt.Printf("Config is %s://%s:%s/%s\n", c.Proto, c.Site, c.Port, c.Endpoint)
+		fmt.Printf("Config is %s://%s:%d/%s\n", c.Proto, c.Site, c.Port, c.Endpoint)
 		fmt.Println(c.Dests)
 		fmt.Println(c.Default, c.Dests[c.Default])
 	}
