@@ -7,8 +7,6 @@
 package main
 
 import (
-	"../config"
-	"../wsn"
 	"flag"
 	"fmt"
 	"os"
@@ -17,6 +15,8 @@ import (
 	"time"
 	"strconv"
 	"regexp"
+	"github.com/keltia/wsn-go/config"
+	"github.com/keltia/wsn-go/wsn"
 )
 
 var (
