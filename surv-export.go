@@ -38,7 +38,7 @@ var (
 
 	RunningFeeds = map[string]string{}
 
-	SurvClient	*wsn.Client
+	client    *wsn.Client
 
 	fOutputFH	*os.File
 )
@@ -48,7 +48,7 @@ func doSubscribe(feeds map[string]string) {
 	time.Sleep(1 * time.Second)
 	// Go go go
 	for name, target := range feeds {
-		unsubFn, err := SurvClient.Subscribe(name, target)
+		unsubFn, err := client.Subscribe(name, target)
 		if err != nil {
 			log.Printf("Error subscribing to %n: %v", name, err)
 		}
@@ -57,16 +57,16 @@ func doSubscribe(feeds map[string]string) {
 			log.Printf("  unsub is %s\n", unsubFn)
 		}
 		topic := wsn.Topic{Started: true, UnsubAddr: unsubFn}
-		SurvClient.Topics[name] = topic
+		client.Topics[name] = topic
 	}
 }
 
 // Handle shutdown operations
 func doShutdown() {
 	// do last actions and wait for all write operations to end
-	for name, topic := range (SurvClient.Topics) {
+	for name, topic := range (client.Topics) {
 		if topic.Started {
-			err := SurvClient.Unsubscribe(name)
+			err := client.Unsubscribe(name)
 			if err != nil {
 				log.Printf("Error unsubscribing to %n: %v", name, err)
 			}
@@ -159,17 +159,17 @@ func main() {
 	}
 
 	// Actually instanciate the client part
-	if SurvClient, err = wsn.NewClient(c); err != nil {
-		log.Fatalf("Error connecting to %s: %v", SurvClient.Target)
+	if client, err = wsn.NewClient(c); err != nil {
+		log.Fatalf("Error connecting to %s: %v", client.Target)
 	}
 
 	if fVerbose {
-		SurvClient.Verbose = true
+		client.Verbose = true
 	}
 
 	// Handle other destinations.
 	if fDest != "" {
-		SurvClient.Config.Default = fDest
+		client.Config.Default = fDest
 	}
 
 	// Open output file
@@ -183,7 +183,7 @@ func main() {
 			panic(err)
 		}
 
-		SurvClient.AddHandler(fileOutput)
+		client.AddHandler(fileOutput)
 	}
 
 	// Check if we did specify a timeout with -i
@@ -193,7 +193,7 @@ func main() {
 		if fVerbose {
 			log.Printf("Run for %ds\n", fTimeout)
 		}
-		SurvClient.SetTimer(fTimeout)
+		client.SetTimer(fTimeout)
 	}
 
 	// Look for feed names on CLI
@@ -203,12 +203,12 @@ func main() {
 				log.Println("Configuring", Feeds[tn], "for", tn)
 			}
 			RunningFeeds[tn] = Feeds[tn]
-			SurvClient.AddFeed(tn)
+			client.AddFeed(tn)
 		}
 	}
 
 	// Start server for callback
 	log.Println("Starting server for ", keys(RunningFeeds), "...")
 	go doSubscribe(RunningFeeds)
-	SurvClient.ServerStart(RunningFeeds)
+	client.ServerStart(RunningFeeds)
 }
