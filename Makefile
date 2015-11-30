@@ -8,10 +8,10 @@ clean:
 	rm -f surv-export
 
 install:
-	go install -v surv-export/surv-export.go surv-export/cli.go
+	go install -v
 
 surv-export:    surv-export.go cli.go
-	go build -v -o $@ surv-export/surv-export.go surv-export/cli.go
+	go build -v -o surv-export
 
 push:
 	git push --all
