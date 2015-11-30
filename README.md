@@ -5,4 +5,8 @@ We can consider this as a first approach at writing a WS-N (web services notific
 Connects to the WS-N broker, subscribe to one or more topics and get the
 notifications through the builtin http server.
 
+# Build status
+
+*Stable*
+[![Build Status](https://secure.travis-ci.org/keltia/surv-client-go.png)](http://travis-ci.org/keltia/surv-client-go)
 
