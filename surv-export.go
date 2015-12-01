@@ -165,6 +165,21 @@ func main() {
 		client.Config.Default = fDest
 	}
 
+	// Look for the feed name on CLI
+	if len(flag.Args()) > 1 {
+		fmt.Errorf("Error: only one feed is allowed")
+		os.Exit(1)
+	}
+
+	tn := flag.Arg(0)
+	if Feeds[tn] != "" {
+		if fVerbose {
+			log.Println("Configuring", Feeds[tn], "for", tn)
+		}
+		RunningFeeds[tn] = Feeds[tn]
+		client.AddFeed(tn)
+	}
+
 	// Open output file
 	if (fOutput != "") {
 		if (fVerbose) {
@@ -191,17 +206,6 @@ func main() {
 			log.Printf("Run for %ds\n", fTimeout)
 		}
 		client.SetTimer(fTimeout)
-	}
-
-	// Look for feed names on CLI
-	for _, tn := range flag.Args() {
-		if Feeds[tn] != "" {
-			if fVerbose {
-				log.Println("Configuring", Feeds[tn], "for", tn)
-			}
-			RunningFeeds[tn] = Feeds[tn]
-			client.AddFeed(tn)
-		}
 	}
 
 	// Start server for callback
