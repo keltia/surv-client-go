@@ -7,7 +7,6 @@
 package main
 
 import (
-	"encoding/xml"
 	"flag"
 	"fmt"
 	"os"
@@ -43,14 +42,6 @@ var (
 
 	fOutputFH	*os.File
 )
-
-// Payload de-serialization
-type Message struct {
-	XMLName xml.Name `xml:"Cat62SurveillanceJSON"`
-	PlainText struct {
-		Data []byte `xml:",innerxml"`
-	}
-}
 
 // Subscribe to wanted topics
 func doSubscribe(feeds map[string]string) {
@@ -94,24 +85,6 @@ func keys(m map[string]string) []string {
 		keys = append(keys, k)
 	}
 	return keys
-}
-
-// fOutput file callback
-func fileOutput(buf []byte) {
-	notify := &Message{}
-
-	err := xml.Unmarshal(buf, notify)
-	if err != nil {
-		real := fmt.Sprintf("Error reading payload: %v/%v", buf, err)
-		log.Println(real)
-	} else {
-		if fVerbose {
-			log.Printf("payload size is %d\n", len(notify.PlainText.Data))
-		}
-		if nb, err := fOutputFH.Write(notify.PlainText.Data); err != nil {
-			log.Fatalf("Error writing %d bytes: %v", nb, err)
-		}
-	}
 }
 
 // Check for specific modifiers, returns seconds
