@@ -106,9 +106,9 @@ func fileOutput(buf []byte) {
 		log.Println(real)
 	} else {
 		if fVerbose {
-			log.Printf("payload size is %s\n", len(notify.PlainText))
+			log.Printf("payload size is %d\n", len(notify.PlainText.Data))
 		}
-		if nb, err := fOutputFH.Write(notify.PlainText); err != nil {
+		if nb, err := fOutputFH.Write(notify.PlainText.Data); err != nil {
 			log.Fatalf("Error writing %d bytes: %v", nb, err)
 		}
 	}
