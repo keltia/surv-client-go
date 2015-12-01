@@ -195,7 +195,16 @@ func main() {
 			// stdout
 			fOutputFH = os.Stdout
 		}
-		client.AddHandler(fileOutput)
+
+		// select output callback
+		switch tn {
+		case "AsterixXML":
+			client.AddHandler(fileOutputXML)
+		case "AsterixJSON":
+			client.AddHandler(fileOutputJSON)
+		case "AsterixJSONgzipped":
+			client.AddHandler(fileOutputJSON)
+		}
 	}
 
 	// Check if we did specify a timeout with -i
