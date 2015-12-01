@@ -45,12 +45,11 @@ var (
 )
 
 // Payload de-serialization
-type SDMessage struct {
-    Payload SDCat62Payload `xml:"Cat62SurveillanceJSON"`
-}
-
-type SDCat62Payload struct {
-   Text []byte `xml:"PlainText"`
+type Message struct {
+	XMLName xml.Name `xml:"Cat62SurveillanceJSON"`
+	PlainText struct {
+		Data string `xml:",innerxml"`
+	}
 }
 
 // Subscribe to wanted topics
@@ -99,7 +98,7 @@ func keys(m map[string]string) []string {
 
 // fOutput file callback
 func fileOutput(buf []byte) {
-	notify := &SDMessage{}
+	notify := &Message{}
 
 	err := xml.Unmarshal(buf, notify)
 	if err != nil {
@@ -107,9 +106,9 @@ func fileOutput(buf []byte) {
 		log.Println(real)
 	} else {
 		if fVerbose {
-			log.Printf("payload size is %s\n", len(notify.Payload.Text))
+			log.Printf("payload size is %s\n", len(notify.PlainText))
 		}
-		if nb, err := fOutputFH.Write(notify.Payload.Text); err != nil {
+		if nb, err := fOutputFH.Write(notify.PlainText); err != nil {
 			log.Fatalf("Error writing %d bytes: %v", nb, err)
 		}
 	}
