@@ -48,7 +48,7 @@ var (
 type Message struct {
 	XMLName xml.Name `xml:"Cat62SurveillanceJSON"`
 	PlainText struct {
-		Data string `xml:",innerxml"`
+		Data []byte `xml:",innerxml"`
 	}
 }
 
