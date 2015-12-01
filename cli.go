@@ -25,7 +25,7 @@ var (
 // my usage string
 const (
 	cliUsage	= `
-Usage: %s [-o FILE] [-i N(s|mn|h|d)] [-v] [-d dest] feeds...
+Usage: %s [-o FILE] [-i N(s|mn|h|d)] [-v] [-d dest] feed
 `
 )
 
