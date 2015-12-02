@@ -31,9 +31,9 @@ var (
 	}
 
 	timeMods = map[string]int64{
-		"mn": 60,
-		"h":  3600,
-		"d":  3600 * 24,
+		"mn": 1 * time.Minute,
+		"h":  1 * time.Hour,
+		"d":  24 * time.Hour,
 	}
 
 	RunningFeeds = map[string]string{}
