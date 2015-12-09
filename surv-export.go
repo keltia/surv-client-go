@@ -57,7 +57,7 @@ func doSubscribe(feeds map[string]string) {
 			log.Printf("  unsub is %s\n", unsubFn)
 		}
 		topic := wsn.Topic{Started: true, UnsubAddr: unsubFn}
-		client.Topics[name] = topic
+		client.Topics[name] = &topic
 	}
 }
 
