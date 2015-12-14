@@ -7,6 +7,7 @@
 package main
 
 import (
+	"path/filepath"
 	"flag"
 	"fmt"
 	"os"
@@ -131,6 +132,11 @@ func main() {
 	}()
 
 	flag.Parse()
+
+	if fVerbose {
+		fmt.Printf("%s version %s\n", filepath.Base(os.Args[0]), SURV_VERSION)
+	}
+
 	if len(flag.Args()) == 0 {
 		fmt.Fprint(os.Stderr, "You must specify at least one feed!\n")
 		fmt.Fprintln(os.Stderr, "List of possible feeds:")
