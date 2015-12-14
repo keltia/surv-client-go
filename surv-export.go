@@ -14,8 +14,6 @@ import (
 	"log"
 	"os/signal"
 	"time"
-	"strconv"
-	"regexp"
 	"github.com/keltia/wsn-go/config"
 	"github.com/keltia/wsn-go/wsn"
 )
@@ -29,12 +27,6 @@ var (
 		"AsterixJSON": "feed_json",
 		"AsterixXML": "feed_xml",
 		"AsterixJSONgzipped": "feed_jsongz",
-	}
-
-	timeMods = map[string]int64{
-		"mn": 60,
-		"h":  3600,
-		"d":  24 *3600,
 	}
 
 	RunningFeeds = map[string]string{}
@@ -88,35 +80,6 @@ func keys(m map[string]string) []string {
 	return keys
 }
 
-// Check for specific modifiers, returns seconds
-//
-//XXX could use time.ParseDuration except it does not support days.
-func checkTimeout(value string) int64 {
-	mod := int64(1)
-	re := regexp.MustCompile(`(?P<time>\d+)(?P<mod>(s|mn|h|d)*)`)
-	match := re.FindStringSubmatch(value)
-	if match == nil {
-		return 0
-	} else {
-		// Get the base time
-		time, err := strconv.ParseInt(match[1], 10, 64)
-		if err != nil {
-			return 0
-		}
-
-		// Look for meaningful modifier
-		if match[2] != "" {
-			mod = timeMods[match[2]]
-			if mod == 0 {
-				mod = 1
-			}
-		}
-
-		// At the worst, mod == 1.
-		return time * mod
-	}
-}
-
 // Main program
 func main() {
 	// Handle SIGINT
@@ -134,7 +97,7 @@ func main() {
 	flag.Parse()
 
 	if fVerbose {
-		fmt.Printf("%s version %s\n", filepath.Base(os.Args[0]), SURV_VERSION)
+		fmt.Printf("%s version %s\n\n", filepath.Base(os.Args[0]), SURV_VERSION)
 	}
 
 	if len(flag.Args()) == 0 {
