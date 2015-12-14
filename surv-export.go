@@ -171,6 +171,10 @@ func main() {
 
 	// Start server for callback
 	log.Println("Starting server for ", keys(RunningFeeds), "...")
+
+	// Start subscriptions asynchronously w/ a delay
 	go doSubscribe(RunningFeeds)
+
+	// Get the ball rolling
 	client.ServerStart(RunningFeeds)
 }
