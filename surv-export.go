@@ -54,23 +54,6 @@ func doSubscribe(feeds map[string]string) {
 	}
 }
 
-// Handle shutdown operations
-func doShutdown() {
-	// do last actions and wait for all write operations to end
-	for name, topic := range (client.Topics) {
-		if topic.Started {
-			err := client.Unsubscribe(name)
-			if err != nil {
-				log.Printf("Error unsubscribing to %n: %v", name, err)
-			}
-			if fVerbose {
-				log.Println("Unsubscribing from", name)
-				log.Printf("Topic: %s Bytes: %d Pkts: %d", name, topic.Bytes, topic.Pkts)
-			}
-		}
-	}
-}
-
 // return list of keys of map m
 func keys(m map[string]string) []string {
 	var keys []string
@@ -89,7 +72,7 @@ func main() {
 	    <-sigint
 	    log.Println("Program killed !")
 
-		doShutdown()
+		doShutdown(client)
 
 	    os.Exit(0)
 	}()
