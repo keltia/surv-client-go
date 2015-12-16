@@ -52,15 +52,6 @@ func doSubscribe(feeds map[string]string) {
 	}
 }
 
-// return list of keys of map m
-func keys(m map[string]string) []string {
-	var keys []string
-	for k, _ := range m {
-		keys = append(keys, k)
-	}
-	return keys
-}
-
 // Main program
 func main() {
 	// Handle SIGINT
