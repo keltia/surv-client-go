@@ -77,6 +77,7 @@ func main() {
 	    os.Exit(0)
 	}()
 
+	flag.Usage = Usage
 	flag.Parse()
 
 	if fVerbose {
