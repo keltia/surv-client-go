@@ -177,5 +177,5 @@ func main() {
 	go doSubscribe(RunningFeeds)
 
 	// Get the ball rolling
-	client.ServerStart(RunningFeeds)
+	client.ServerStart()
 }
