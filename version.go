@@ -2,7 +2,7 @@ package main
 
 // Version our API & package
 const (
-	SURV_VERSION = "0.2"
+	SURV_VERSION = "0.3"
 )
 
 
