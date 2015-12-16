@@ -13,6 +13,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"path/filepath"
 )
 
 var (
@@ -32,14 +33,16 @@ var (
 
 // my usage string
 const (
-	cliUsage	= `
+	cliUsage	= `%s version %s
 Usage: %s [-o FILE] [-i N(s|mn|h|d)] [-v] [-d dest] feed
+
 `
 )
 
 // Redefine Usage
 var Usage = func() {
-        fmt.Fprintf(os.Stderr, cliUsage, os.Args[0])
+		myName := filepath.Base(os.Args[0])
+        fmt.Fprintf(os.Stderr, cliUsage, myName, SURV_VERSION, myName)
         flag.PrintDefaults()
 }
 
