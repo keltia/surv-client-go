@@ -49,18 +49,7 @@ func doSubscribe(feeds map[string]string) {
 			log.Printf("Subscribing to /%s for %s\n", target, name)
 			log.Printf("  unsub is %s\n", unsubFn)
 		}
-		topic := wsn.Topic{Started: true, UnsubAddr: unsubFn}
-		client.Topics[name] = &topic
 	}
-}
-
-// return list of keys of map m
-func keys(m map[string]string) []string {
-	var keys []string
-	for k, _ := range m {
-		keys = append(keys, k)
-	}
-	return keys
 }
 
 // Main program
@@ -177,5 +166,5 @@ func main() {
 	go doSubscribe(RunningFeeds)
 
 	// Get the ball rolling
-	client.ServerStart(RunningFeeds)
+	client.ServerStart()
 }
