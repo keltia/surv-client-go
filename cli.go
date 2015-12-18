@@ -58,7 +58,7 @@ func init() {
 // Check for specific modifiers, returns seconds
 //
 //XXX could use time.ParseDuration except it does not support days.
-func checkTimeout(value string) int64 {
+func checkTimeout(value string) (timeInSec int64) {
 	mod := int64(1)
 	re := regexp.MustCompile(`(?P<time>\d+)(?P<mod>(s|mn|h|d)*)`)
 	match := re.FindStringSubmatch(value)
@@ -80,6 +80,7 @@ func checkTimeout(value string) int64 {
 		}
 
 		// At the worst, mod == 1.
-		return time * mod
+		timeInSec = time * mod
+		return
 	}
 }
