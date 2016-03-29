@@ -1,7 +1,7 @@
 // data.go
 
 /*
-  Decodes the different payloads.
+Decodes the different payloads.
  */
 package main
 
@@ -11,6 +11,7 @@ import (
 	"log"
 )
 
+// PLJson is the JSON payload
 type PLJson struct {
 	XMLName xml.Name `xml:"Cat62SurveillanceJSON"`
 	PlainText struct {
@@ -18,6 +19,7 @@ type PLJson struct {
 	}
 }
 
+// PLXml is the XML payload
 type PLXml struct {
 	XMLName xml.Name `xml:"Cat62Surveillance"`
 	Data []byte `xml:",innerxml"`
