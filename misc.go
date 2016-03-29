@@ -7,6 +7,7 @@ package main
 
 import (
 	"log"
+	"sort"
 	"github.com/keltia/wsn-go/wsn"
 )
 
@@ -29,9 +30,10 @@ func doShutdown(client *wsn.Client) {
 
 // return list of keys of map m
 func keys(m map[string]string) []string {
-	var keys []string
+	var ks []string
 	for k := range m {
-		keys = append(keys, k)
+		ks = append(ks, k)
 	}
-	return keys
+	sort.Strings(ks)
+	return ks
 }
