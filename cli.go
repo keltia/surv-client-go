@@ -39,10 +39,10 @@ Usage: %s [-o FILE] [-i N(s|mn|h|d)] [-v] [-d dest] feed
 `
 )
 
-// Redefine Usage
+// Usage string override.
 var Usage = func() {
 		myName := filepath.Base(os.Args[0])
-        fmt.Fprintf(os.Stderr, cliUsage, myName, SURV_VERSION, myName)
+        fmt.Fprintf(os.Stderr, cliUsage, myName, SurvVersion, myName)
         flag.PrintDefaults()
 }
 
@@ -64,23 +64,22 @@ func checkTimeout(value string) (timeInSec int64) {
 	match := re.FindStringSubmatch(value)
 	if match == nil {
 		return 0
-	} else {
-		// Get the base time
-		time, err := strconv.ParseInt(match[1], 10, 64)
-		if err != nil {
-			return 0
-		}
-
-		// Look for meaningful modifier
-		if match[2] != "" {
-			mod = timeMods[match[2]]
-			if mod == 0 {
-				mod = 1
-			}
-		}
-
-		// At the worst, mod == 1.
-		timeInSec = time * mod
-		return
 	}
+	// Get the base time
+	time, err := strconv.ParseInt(match[1], 10, 64)
+	if err != nil {
+		return 0
+	}
+
+	// Look for meaningful modifier
+	if match[2] != "" {
+		mod = timeMods[match[2]]
+		if mod == 0 {
+			mod = 1
+		}
+	}
+
+	// At the worst, mod == 1.
+	timeInSec = time * mod
+	return
 }

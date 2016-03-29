@@ -19,17 +19,17 @@ import (
 )
 
 var (
-	// We use a tag to find the proper file now. $HOME/.<tag>/config.toml
+	// RcFile is the tag to find the proper file now. $HOME/.<tag>/config.toml
 	RcFile = "surveillance"
 
-	// All possible feeds
+	// Feeds lists all possible feeds
 	Feeds = map[string]string{
 		"AsterixJSON": "feed_json",
 		"AsterixXML": "feed_xml",
 		"AsterixJSONgzipped": "feed_jsongz",
 	}
 
-	RunningFeeds = map[string]string{}
+	runningFeeds = map[string]string{}
 
 	client    *wsn.Client
 
@@ -70,13 +70,13 @@ func main() {
 	flag.Parse()
 
 	if fVerbose {
-		fmt.Printf("%s version %s\n\n", filepath.Base(os.Args[0]), SURV_VERSION)
+		fmt.Printf("%s version %s\n\n", filepath.Base(os.Args[0]), SurvVersion)
 	}
 
 	if len(flag.Args()) == 0 {
 		fmt.Fprint(os.Stderr, "You must specify at least one feed!\n")
 		fmt.Fprintln(os.Stderr, "List of possible feeds:")
-		for f, _ := range Feeds {
+		for f := range Feeds {
 			fmt.Fprintf(os.Stderr, "  %s\n", f)
 		}
 		os.Exit(1)
@@ -118,7 +118,7 @@ func main() {
 		if fVerbose {
 			log.Println("Configuring", Feeds[tn], "for", tn)
 		}
-		RunningFeeds[tn] = Feeds[tn]
+		runningFeeds[tn] = Feeds[tn]
 		client.AddFeed(tn)
 	}
 
@@ -160,10 +160,10 @@ func main() {
 	}
 
 	// Start server for callback
-	log.Println("Starting server for ", keys(RunningFeeds), "...")
+	log.Println("Starting server for ", keys(runningFeeds), "...")
 
 	// Start subscriptions asynchronously w/ a delay
-	go doSubscribe(RunningFeeds)
+	go doSubscribe(runningFeeds)
 
 	// Get the ball rolling
 	client.ServerStart()
