@@ -1,7 +1,7 @@
 // misc.go
 
 /*
-  This file implements various housekeeping functions.
+This file implements various housekeeping functions.
  */
 package main
 
@@ -30,7 +30,7 @@ func doShutdown(client *wsn.Client) {
 // return list of keys of map m
 func keys(m map[string]string) []string {
 	var keys []string
-	for k, _ := range m {
+	for k := range m {
 		keys = append(keys, k)
 	}
 	return keys
