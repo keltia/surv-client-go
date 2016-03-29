@@ -70,7 +70,7 @@ func main() {
 	flag.Parse()
 
 	if fVerbose {
-		fmt.Printf("%s version %s\n\n", filepath.Base(os.Args[0]), SURV_VERSION)
+		fmt.Printf("%s version %s\n\n", filepath.Base(os.Args[0]), SurvVersion)
 	}
 
 	if len(flag.Args()) == 0 {

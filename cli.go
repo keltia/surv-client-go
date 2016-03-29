@@ -42,7 +42,7 @@ Usage: %s [-o FILE] [-i N(s|mn|h|d)] [-v] [-d dest] feed
 // Usage string override.
 var Usage = func() {
 		myName := filepath.Base(os.Args[0])
-        fmt.Fprintf(os.Stderr, cliUsage, myName, SURV_VERSION, myName)
+        fmt.Fprintf(os.Stderr, cliUsage, myName, SurvVersion, myName)
         flag.PrintDefaults()
 }
 
